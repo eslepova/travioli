@@ -1,9 +1,9 @@
-import { Destination } from "../types";
+import { DestinationType } from "../types";
 
 /**
  * Available destinations
  */
-export const destinations: Destination[] = [
+export const destinations: DestinationType[] = [
   {
     "id": 70,
     "name": "Atlanta"

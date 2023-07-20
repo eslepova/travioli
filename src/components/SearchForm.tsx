@@ -4,12 +4,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Button from '@mui/material/Button';
-import { destinations } from '../constants/destinations';
+import { destinations } from '../mock/destinations';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import styled from '@emotion/styled';
 import { today, tomorrow } from '../constants/datetime';
 import dayjs, { Dayjs } from 'dayjs';
-import { Destination } from '../types';
+import { DestinationType } from '../types';
 import { MOBILE_VIEW_BREAKPOINT } from '../constants/breakpoints';
 import { SEARCH_QUERY_KEY } from '../constants/localStorage';
 import { HOTELS_LIST } from '../constants/urls';
@@ -43,7 +43,7 @@ const SubmitButtonWrapper = styled(Button)`
 export const SearchForm = () => {
   const [checkInTime, setCheckInTime] = React.useState<Dayjs | null>(today);
   const [checkOutTime, setCheckOutTime] = React.useState<Dayjs | null>(tomorrow);
-  const [destination, setDestination] = React.useState<Destination | null>(null);
+  const [destination, setDestination] = React.useState<DestinationType | null>(null);
   const [amountOfPeople, setAmountOfPeople] = React.useState<string | null>(null);
 
   const submitHandler = React.useCallback((event: React.FormEvent) => {
@@ -65,7 +65,7 @@ export const SearchForm = () => {
             getOptionLabel={(option) => option.name}
             renderInput={(params) => <TextField {...params} label="Destination" />}
             value={destination}
-            onChange={(event, newValue: Destination | null) => setDestination(newValue)}
+            onChange={(event, newValue: DestinationType | null) => setDestination(newValue)}
           />
         </FormControl>
 
