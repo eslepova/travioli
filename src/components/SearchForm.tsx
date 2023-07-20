@@ -11,6 +11,8 @@ import { today, tomorrow } from '../constants/datetime';
 import dayjs, { Dayjs } from 'dayjs';
 import { Destination } from '../types';
 import { MOBILE_VIEW_BREAKPOINT } from '../constants/breakpoints';
+import { SEARCH_QUERY_KEY } from '../constants/localStorage';
+import { HOTELS_LIST } from '../constants/urls';
 
 const FieldWrapper = styled.div`
   display: flex;
@@ -44,8 +46,15 @@ export const SearchForm = () => {
   const [destination, setDestination] = React.useState<Destination | null>(null);
   const [amountOfPeople, setAmountOfPeople] = React.useState<string | null>(null);
 
+  const submitHandler = React.useCallback((event: React.FormEvent) => {
+    event.preventDefault();
+
+    localStorage.setItem(SEARCH_QUERY_KEY, destination?.name ?? '');
+    location.href = HOTELS_LIST;
+  }, [destination]);
+
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <FieldWrapper>
         <FormControl>
           <Autocomplete

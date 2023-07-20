@@ -7,14 +7,15 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom';
+import { HOTELS_LIST, ROOT_URL } from './constants/urls';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROOT_URL,
     element: <SearchScreen />
   },
   {
-    path: "/hotels",
+    path: HOTELS_LIST,
     element: <SearchResultScreen />
   },
 ]);
