@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/travioli/static/js/main.336a627c.js",
+    "main.js": "/travioli/static/js/main.c3f1e482.js",
     "index.html": "/travioli/index.html",
-    "main.336a627c.js.map": "/travioli/static/js/main.336a627c.js.map"
+    "main.c3f1e482.js.map": "/travioli/static/js/main.c3f1e482.js.map"
   },
   "entrypoints": [
-    "static/js/main.336a627c.js"
+    "static/js/main.c3f1e482.js"
   ]
 }
