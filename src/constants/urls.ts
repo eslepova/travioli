@@ -1,3 +1,3 @@
-export const ROOT_URL = '/';
+export const ROOT_URL = '';
 
-export const HOTELS_LIST = '/hotels';
+export const HOTELS_LIST = 'hotels';

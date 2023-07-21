@@ -18,7 +18,9 @@ const router = createBrowserRouter([
     path: HOTELS_LIST,
     element: <SearchResultScreen />
   },
-]);
+], {
+  basename: '/travioli'
+});
 
 /**
  * Root component

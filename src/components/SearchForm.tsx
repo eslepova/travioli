@@ -13,6 +13,8 @@ import { DestinationType } from '../types';
 import { MOBILE_VIEW_BREAKPOINT } from '../constants/breakpoints';
 import { SEARCH_QUERY_KEY } from '../constants/localStorage';
 import { HOTELS_LIST } from '../constants/urls';
+import { useNavigate } from "react-router-dom";
+
 
 const FieldWrapper = styled.div`
   display: flex;
@@ -45,12 +47,13 @@ export const SearchForm = () => {
   const [checkOutTime, setCheckOutTime] = React.useState<Dayjs | null>(tomorrow);
   const [destination, setDestination] = React.useState<DestinationType | null>(null);
   const [amountOfPeople, setAmountOfPeople] = React.useState<string | null>(null);
+  const navigate = useNavigate();
 
   const submitHandler = React.useCallback((event: React.FormEvent) => {
     event.preventDefault();
 
     localStorage.setItem(SEARCH_QUERY_KEY, destination?.name ?? '');
-    location.href = HOTELS_LIST;
+    navigate(HOTELS_LIST);
   }, [destination]);
 
   return (

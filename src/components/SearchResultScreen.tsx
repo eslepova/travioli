@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { Layout } from './Layout';
 import { HotelCard } from './HotelCard';
 import { SEARCH_QUERY_KEY } from '../constants/localStorage';
@@ -6,8 +7,7 @@ import { HOTEL_LIST } from '../mock/hotels';
 import { HotelType } from '../types';
 import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import { ROOT_URL } from '../constants/urls';
+import { default as UILink } from '@mui/material/Link';
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -36,7 +36,7 @@ export const SearchResultScreen = () => {
             sx={{margin: '50px'}}
           >
             Nothing was found according to your request.{' '}
-            <Link href={ROOT_URL}>Back to search page</Link>
+            <UILink><Link to='..'>Back to search page</Link></UILink>
           </Typography>
         )}
         {hotelList.map((hotel) => (
