@@ -8,28 +8,47 @@ import { HotelType } from '../types';
 import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
 import { default as UILink } from '@mui/material/Link';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
+const Informer = styled.p`
+  width: fit-content;
+  margin: auto;
+  font-weight: bold;
+  margin-bottom: 20px;
+`;
+
+const QTY_PER_ROW = 10;
+
 /**
  * Hotel list page
  */
 export const SearchResultScreen = () => {
-  const [hotelList, setHotelList] = React.useState<HotelType[]>([]);
-  const [finishedLoading, setFinisehdLoading] = React.useState(false);
+  const [fullHotelList, setFullHotelList] = React.useState<HotelType[]>([]);
+  const [finishedLoadingFullHotelList, setFinisehdLoadingFullHotelList] = React.useState(false);
+  const [loadedHotels, setLoadedHotels] = React.useState<HotelType[]>([]);
+
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      setLoadedHotels([...loadedHotels, ...fullHotelList.slice(loadedHotels.length, loadedHotels.length + QTY_PER_ROW)]);
+    }, 500);
+  };
 
   React.useEffect(() => {
     const selectedCity = localStorage.getItem(SEARCH_QUERY_KEY)?.toLowerCase();
 
-    setHotelList(HOTEL_LIST.filter((hotel) => hotel.city.toLowerCase() === selectedCity));
-    setFinisehdLoading(true);
+    const filteredHotelList = HOTEL_LIST.filter((hotel) => hotel.city.toLowerCase() === selectedCity);
+    setFullHotelList(filteredHotelList);
+    setLoadedHotels(filteredHotelList.slice(0, QTY_PER_ROW));
+    setFinisehdLoadingFullHotelList(true);
   }, []);
 
   return (
     <Layout>
-        {finishedLoading && !hotelList.length && (
+        {finishedLoadingFullHotelList && !fullHotelList.length && (
           <Typography
             align='center'
             variant='h4'
@@ -39,11 +58,19 @@ export const SearchResultScreen = () => {
             <UILink><Link to='..'>Back to search page</Link></UILink>
           </Typography>
         )}
-        {hotelList.map((hotel) => (
-          <CardWrapper>
-            <HotelCard {...hotel} />
-          </CardWrapper>
-        ))}
+        {fullHotelList.length ? <InfiniteScroll
+          dataLength={loadedHotels.length}
+          next={fetchMoreData}
+          hasMore={loadedHotels.length < fullHotelList.length}
+          loader={<Informer>Loading...</Informer>}
+          endMessage={<Informer>No more data to load.</Informer>}
+        >
+          {loadedHotels.map((hotel) => (
+            <CardWrapper key={hotel.id}>
+              <HotelCard {...hotel} />
+            </CardWrapper>
+          ))}
+        </InfiniteScroll> : ''}
     </Layout>
   );
 }
