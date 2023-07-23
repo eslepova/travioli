@@ -8,13 +8,12 @@ import { destinations } from '../mock/destinations';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import styled from '@emotion/styled';
 import { today, tomorrow } from '../constants/datetime';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { DestinationType } from '../types';
 import { MOBILE_VIEW_BREAKPOINT } from '../constants/breakpoints';
 import { SEARCH_QUERY_KEY } from '../constants/localStorage';
 import { HOTELS_LIST } from '../constants/urls';
 import { useNavigate } from "react-router-dom";
-
 
 const FieldWrapper = styled.div`
   display: flex;
@@ -39,6 +38,8 @@ const SubmitButtonWrapper = styled(Button)`
   margin: auto;
 `;
 
+const ERROR_MSG = 'Please select valid date';
+
 /**
  * Hotel search form
  */
@@ -47,7 +48,12 @@ export const SearchForm = () => {
   const [checkOutTime, setCheckOutTime] = React.useState<Dayjs | null>(tomorrow);
   const [destination, setDestination] = React.useState<DestinationType | null>(null);
   const [amountOfPeople, setAmountOfPeople] = React.useState<string | null>(null);
+  const [datePickerError, setDatePickerError] = React.useState(false);
   const navigate = useNavigate();
+
+  const validate = React.useCallback((checkInDate: Dayjs | null, checkOutDate: Dayjs | null) =>
+    setDatePickerError(!!(checkInDate && checkOutDate && checkInDate.diff(checkOutDate) >= 0)), []
+  );
 
   const submitHandler = React.useCallback((event: React.FormEvent) => {
     event.preventDefault();
@@ -78,8 +84,13 @@ export const SearchForm = () => {
             disablePast
             defaultValue={today}
             value={checkInTime}
-            onChange={(value) => setCheckInTime(value)}
-            maxDate={dayjs(checkOutTime).subtract(1, 'day')}
+            onChange={(value) => (setCheckInTime(value), validate(value, checkOutTime))}
+            slotProps={{
+              textField: {
+                helperText: datePickerError ? ERROR_MSG : '',
+                error: datePickerError
+              }
+            }}
           />
         </FormControl>
 
@@ -89,8 +100,13 @@ export const SearchForm = () => {
             disablePast
             defaultValue={tomorrow}
             value={checkOutTime}
-            onChange={(value) => setCheckOutTime(value)}
-            minDate={dayjs(checkInTime).add(1, 'day')}
+            onChange={(value) => (setCheckOutTime(value), validate(checkInTime, value))}
+            slotProps={{
+              textField: {
+                helperText: datePickerError ? ERROR_MSG : '',
+                error: datePickerError
+              }
+            }}
           />
         </FormControl>
 
